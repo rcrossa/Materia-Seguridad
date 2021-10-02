@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 250M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - ./wordpress:/var/www/html
+      - wordpress:/wordpress_data     
+    # command: docker cp ./ ./wp-config.php tp_wordpress_1:/var/www/html
+
+  db:
+    image: mysql:5.7
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 250M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ./sql:/var/lib/mysql
+      - db:/wordpress_data
+
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 250M
+        reservations:
+          cpus: '0.25'
+          memory: 20M
+    restart: always
+    ports:
+      - '8000:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: examplepass
+volumes:
+  wordpress:
+  db:
