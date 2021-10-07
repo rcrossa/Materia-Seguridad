@@ -22,7 +22,7 @@ services:
     volumes:
       - ./wordpress:/var/www/html
       - wordpress:/wordpress_data     
-    # command: docker cp ./ ./wp-config.php tp_wordpress_1:/var/www/html
+    
 
   db:
     image: mysql:5.7
