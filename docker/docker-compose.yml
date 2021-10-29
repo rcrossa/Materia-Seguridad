@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: Clase_jueves_dev
+    build:
+      context: ./
+      target: dev
+    deploy:
+        resources:
+          limits:
+            cpus: '0.50'
+            memory: 250M
+          reservations:
+            cpus: '0.25'
+            memory: 20M
+    volumes:
+      - .:/src
+    command: npm run start:dev
+    ports:
+      - "3002:3000"
+    environment:
+      NODE_ENV: development
+      DEBUG: nodejs-docker-express:*
+  
+  # production:
+  #   container_name: Clase_jueves_production
+  #   build:
+  #     context: ./
+  #     target: dev
+  #   deploy:
+  #       resources:
+  #         limits:
+  #           cpus: '0.50'
+  #           memory: 250M
+  #         reservations:
+  #           cpus: '0.25'
+  #           memory: 20M
+  #   volumes:
+  #     - .:/src
+  #   command: npm run start:dev
+  #   ports:
+  #     - "3003:3000"
+  #   environment:
+  #     NODE_ENV: development
+  #     DEBUG: nodejs-docker-express:*
