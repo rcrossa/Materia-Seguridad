@@ -117,5 +117,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-node_modules
+/node_modules
 .node_history
